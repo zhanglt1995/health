@@ -225,6 +225,23 @@
             },
             //钩子函数，VUE对象初始化完成后自动执行
             created() {
+                // 发送请求到后台获取检查项列表数据，
+                // 查询数据get, 条件查询post(复杂查询条件), post:修改或创建数据
+                axios.get('/checkitem/findAll.do').then(res => {
+                    // 把返回的结果(list<checkitem>)绑定到dataList属性即可
+                    //返回的结果 res.data=result{flag,message,data}
+                    var result = res.data;
+                    if(result.flag){
+                        // 成功
+                        //绑定数据
+                        this.dataList = result.data;
+                    }else{
+                        this.$message({
+                            message: result.message,
+                            type: "error"
+                        })
+                    }
+                })
             },
             methods: {
                 //编辑
