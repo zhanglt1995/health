@@ -1,5 +1,7 @@
 package com.zlt.health.service;
 
+import com.zlt.health.VO.PageResult;
+import com.zlt.health.VO.QueryPageBean;
 import com.zlt.health.pojo.CheckItem;
 
 import java.util.List;
@@ -15,4 +17,17 @@ public interface CheckItemService {
      * @return
      */
     List<CheckItem> findAll();
+
+    /**
+     * 添加
+     * @param checkItem
+     */
+    void add(CheckItem checkItem);
+
+    /**
+     * 分页查询
+     * @param queryPageBean
+     * @return
+     */
+    PageResult<CheckItem> findPage(QueryPageBean queryPageBean);
 }

@@ -27,7 +27,7 @@
                 <div class="box">
                     <div class="filter-container">
                         <el-input placeholder="项目编码/项目名称" v-model="pagination.queryString" style="width: 200px;" class="filter-item"></el-input>
-                        <el-button @click="findPage()" class="dalfBut">查询</el-button>
+                        <el-button @click="handleCurrentChange(1)" class="dalfBut">查询</el-button>
                         <el-button type="primary" class="butT" @click="handleCreate()">新建</el-button>
                     </div>
                     <el-table size="small" current-row-key="id" :data="dataList" stripe highlight-current-row>
@@ -225,23 +225,7 @@
             },
             //钩子函数，VUE对象初始化完成后自动执行
             created() {
-                // 发送请求到后台获取检查项列表数据，
-                // 查询数据get, 条件查询post(复杂查询条件), post:修改或创建数据
-                axios.get('/checkitem/findAll.do').then(res => {
-                    // 把返回的结果(list<checkitem>)绑定到dataList属性即可
-                    //返回的结果 res.data=result{flag,message,data}
-                    var result = res.data;
-                    if(result.flag){
-                        // 成功
-                        //绑定数据
-                        this.dataList = result.data;
-                    }else{
-                        this.$message({
-                            message: result.message,
-                            type: "error"
-                        })
-                    }
-                })
+                this.findPage();
             },
             methods: {
                 //编辑
@@ -249,21 +233,65 @@
                 },
                 //添加
                 handleAdd () {
+                    //校验表单输入项是否合法
+                    this.$refs['dataAddForm'].validate((valid) => {
+                        if (valid) {
+                            //表单数据校验通过，发送ajax请求将表单数据提交到后台
+                            axios.post("/checkitem/add.do",this.formData).then((response)=> {
+                                //隐藏新增窗口
+                                this.dialogFormVisible = false;
+                                //判断后台返回的flag值，true表示添加操作成功，false为添加操作失败
+                                if(response.data.flag){
+                                    this.$message({
+                                        message: response.data.message,
+                                        type: 'success'
+                                    });
+                                }else{
+                                    this.$message.error(response.data.message);
+                                }
+                            }).finally(()=> {
+                                // 刷新列表数据
+                                this.findPage();
+                            });
+                        } else {
+                            this.$message.error("表单数据校验失败");
+                            return false;
+                        }
+                    });
                 },
                 //分页查询
                 findPage() {
+                    // 发送查询的请求，提交pagination(currentPage,pageSize)
+                    axios.post('/checkitem/findPage.do',this.pagination).then(res=>{
+                        if(res.data.flag){
+                            // 绑定数据
+                            //res.data => result {flag, message,data}
+                            // result.data = pageResult {total, rows}
+                            this.dataList = res.data.data.rows;
+                            // 总计录数
+                            this.pagination.total=res.data.data.total;
+                        }else{
+                            this.$message.error(res.data.message);
+                        }
+                    })
                 },
                 // 重置表单
                 resetForm() {
+                    this.formData = {};
                 },
                 // 弹出添加窗口
                 handleCreate() {
+                    this.resetForm();
+                    this.dialogFormVisible = true;
                 },
                 // 弹出编辑窗口
                 handleUpdate(row) {
                 },
                 //切换页码
                 handleCurrentChange(currentPage) {
+                    // currentPage为切换后的页码
+                    this.pagination.currentPage = currentPage;
+                    this.findPage();
                 },
                 // 删除
                 handleDelete(row) {
