@@ -30,4 +30,23 @@ public interface CheckItemService {
      * @return
      */
     PageResult<CheckItem> findPage(QueryPageBean queryPageBean);
+
+    /**
+     * 更新
+     * @param checkItem
+     */
+    void update(CheckItem checkItem);
+
+    /**
+     * 根据id删除
+     * @param id
+     */
+    void deleteById(Integer id);
+
+    /**
+     * 根据检查组id查询检查项的集合
+     * @param checkGroupId
+     * @return
+     */
+    List<Integer> findCheckItemIdsByCheckGroupId(Integer checkGroupId);
 }

@@ -29,4 +29,23 @@ public interface CheckItemDao {
      * @return
      */
     Page<CheckItem> findByPage(@Param("queryString") String queryString);
+
+    /**
+     * 修改
+     * @param checkItem
+     */
+    void update(CheckItem checkItem);
+
+    /**
+     * 根据id删除
+     * @param id
+     */
+    void deleteById(Integer id);
+
+    /**
+     * 根据检查组id查询
+     * @param groupId
+     * @return
+     */
+    List<Integer> findByGroupId(@Param("groupId") Integer groupId);
 }

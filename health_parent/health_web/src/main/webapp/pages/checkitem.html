@@ -44,7 +44,7 @@
                         <el-table-column label="操作" align="center">
                             <template slot-scope="scope">
                                 <el-button type="primary" size="mini" @click="handleUpdate(scope.row)">编辑</el-button>
-                                <el-button size="mini" type="danger" @click="handleDelete(scope.row)">删除</el-button>
+                                <el-button size="mini" type="danger" @click="handleDelete(scope.row.id)">删除</el-button>
                             </template>
                         </el-table-column>
                     </el-table>
@@ -230,6 +230,28 @@
             methods: {
                 //编辑
                 handleEdit() {
+                    // 提交修改
+                    this.$refs['dataEditForm'].validate((valid) => {
+                        if (valid) {
+                            // 所有检验通过, 提交数据给后台this.formData
+                            axios.post('/checkitem/update.do', this.formData).then(res=>{
+                                this.$message({
+                                    message: res.data.message,
+                                    type: res.data.flag?"success":"error"
+                                })
+                                if(res.data.flag){
+                                    // 成功的处理
+                                    // 关闭窗口
+                                    this.dialogFormVisible4Edit = false;
+                                    // 刷新列表数据
+                                    this.findPage();
+                                }
+                            })
+                        } else {
+                            console.log('error submit!!');
+                            return false;
+                        }
+                    });
                 },
                 //添加
                 handleAdd () {
@@ -286,6 +308,11 @@
                 },
                 // 弹出编辑窗口
                 handleUpdate(row) {
+                    this.resetForm();
+                    this.dialogFormVisible4Edit = true;
+                    // 发送异步请求，数据回显(向这种可以从前台拿到所有要回显的数据到底有没有必要再发一次异步请求)
+                    this.formData = row;
+
                 },
                 //切换页码
                 handleCurrentChange(currentPage) {
@@ -294,7 +321,28 @@
                     this.findPage();
                 },
                 // 删除
-                handleDelete(row) {
+                handleDelete(id) {
+                    this.$confirm('此操作将【永久删除】该检查项, 是否继续?', '提示', {
+                        confirmButtonText: '确定',
+                        cancelButtonText: '取消',
+                        type: 'warning'
+                    }).then(() => {
+                        // 点击确定后调用
+                        axios.delete('/checkitem/deleteById/' + id +'.do').then(res=>{
+                            this.$message({
+                                message: res.data.message,
+                                type: res.data.flag?"success":"error"
+                            })
+                            if(res.data.flag){
+                                // 成功
+                                // 刷新列表数据
+                                this.findPage();
+                            }
+                        })
+                    }).catch(() => {
+                        // 点击取消后调用
+                        // 空着，防止报错
+                    });
                 }
             }
         })

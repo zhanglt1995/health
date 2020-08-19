@@ -9,6 +9,7 @@ import com.zlt.health.pojo.CheckItem;
 import com.zlt.health.service.CheckItemService;
 import org.springframework.web.bind.annotation.*;
 
+import javax.ws.rs.Path;
 import java.util.List;
 
 /**
@@ -39,5 +40,23 @@ public class CheckItemController {
     public Result findPage(@RequestBody QueryPageBean queryPageBean){
         PageResult<CheckItem> pageResult = checkItemService.findPage(queryPageBean);
         return new Result(true,MessageConstants.QUERY_CHECKITEM_SUCCESS,pageResult);
+    }
+
+    @PostMapping("/update")
+    public Result update(@RequestBody CheckItem checkItem){
+        checkItemService.update(checkItem);
+        return new Result(true,MessageConstants.EDIT_CHECKITEM_SUCCESS);
+    }
+
+    @DeleteMapping("/deleteById/{id}")
+    public Result deleteById(@PathVariable("id") Integer id){
+        checkItemService.deleteById(id);
+        return new Result(true,MessageConstants.DELETE_CHECKITEM_SUCCESS);
+    }
+
+    @GetMapping("/findCheckItemIdsByCheckGroupId")
+    public Result findCheckItemIdsByCheckGroupId(Integer checkGroupId){
+        List<Integer> checkItemIds = checkItemService.findCheckItemIdsByCheckGroupId(checkGroupId);
+        return new Result(true,MessageConstants.QUERY_CHECKITEM_SUCCESS,checkItemIds);
     }
 }

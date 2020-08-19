@@ -18,7 +18,7 @@ import java.util.List;
  * @create 2020/8/17 16:45
  * @desc
  */
-@Service
+@Service(interfaceClass = CheckItemService.class)
 public class CheckItemServiceImpl implements CheckItemService {
     @Autowired
     private CheckItemDao checkItemDao;
@@ -48,5 +48,21 @@ public class CheckItemServiceImpl implements CheckItemService {
         List<CheckItem> checkItemList = page.getResult();
 
         return new PageResult(total,checkItemList);
+    }
+
+    @Override
+    public void update(CheckItem checkItem) {
+        checkItemDao.update(checkItem);
+    }
+
+    @Override
+    public void deleteById(Integer id) {
+        checkItemDao.deleteById(id);
+    }
+
+    @Override
+    public List<Integer> findCheckItemIdsByCheckGroupId(Integer checkGroupId) {
+        List<Integer> checkItemIds = checkItemDao.findByGroupId(checkGroupId);
+        return checkItemIds;
     }
 }
