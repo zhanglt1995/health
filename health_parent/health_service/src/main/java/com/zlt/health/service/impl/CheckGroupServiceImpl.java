@@ -80,4 +80,9 @@ public class CheckGroupServiceImpl implements CheckGroupService {
         // 删除检查组
         checkGroupDao.deleteById(id);
     }
+
+    @Override
+    public List<CheckGroup> findAll() {
+        return checkGroupDao.findAll();
+    }
 }

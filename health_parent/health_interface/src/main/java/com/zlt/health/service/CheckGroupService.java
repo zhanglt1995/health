@@ -46,4 +46,10 @@ public interface CheckGroupService {
      * @param id
      */
     void deleteById(Integer id);
+
+    /**
+     * 查询所有
+     * @return
+     */
+    List<CheckGroup> findAll();
 }

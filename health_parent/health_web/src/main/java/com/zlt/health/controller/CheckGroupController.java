@@ -22,6 +22,12 @@ public class CheckGroupController {
     @Reference
     private CheckGroupService checkGroupService;
 
+    @GetMapping("/findAll")
+    public Result findAll(){
+        List<CheckGroup> checkGroupList = checkGroupService.findAll();
+        return new Result(true,MessageConstants.QUERY_CHECKGROUP_SUCCESS,checkGroupList);
+    }
+
     @PostMapping("/findPage")
     public Result findPage(@RequestBody QueryPageBean queryPageBean){
         PageResult<CheckGroup> pageResult = checkGroupService.findPage(queryPageBean);

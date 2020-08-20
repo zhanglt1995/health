@@ -39,4 +39,7 @@
     <select id="findById" parameterType="int" resultType="CheckGroup">
         select * from t_checkgroup where id = #{id}
     </select>
+    <select id="findAll" resultType="com.zlt.health.pojo.CheckGroup">
+        select * from t_checkgroup
+    </select>
 </mapper>
