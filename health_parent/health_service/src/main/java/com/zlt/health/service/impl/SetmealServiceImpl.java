@@ -7,6 +7,7 @@ import com.zlt.health.VO.PageResult;
 import com.zlt.health.VO.QueryPageBean;
 import com.zlt.health.constant.MessageConstants;
 import com.zlt.health.dao.SetmealDao;
+import com.zlt.health.exception.HealthException;
 import com.zlt.health.pojo.Setmeal;
 import com.zlt.health.service.SetmealService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -78,7 +79,7 @@ public class SetmealServiceImpl implements SetmealService {
         int count = setmealDao.findOrderCountBySetmealId(id);
         if(count > 0){
             // 被使用了
-            throw new RuntimeException(MessageConstants.SETMEAL_IN_USE);
+            throw new HealthException(MessageConstants.SETMEAL_IN_USE);
         }
         // 没有使用
         // 先删除套餐与检查组的关系
@@ -90,5 +91,10 @@ public class SetmealServiceImpl implements SetmealService {
     @Override
     public List<Integer> findCheckgroupIdsBySetmealId(int id) {
         return setmealDao.findCheckgroupIdsBySetmealId(id);
+    }
+
+    @Override
+    public List<Setmeal> findAll() {
+        return setmealDao.findAll();
     }
 }

@@ -48,4 +48,7 @@
     <select id="findOrderCountBySetmealId" parameterType="int" resultType="int">
         select count(1) from t_order where setmeal_id=#{id}
     </select>
+    <select id="findAll" resultType="com.zlt.health.pojo.Setmeal">
+        select * from t_setmeal
+    </select>
 </mapper>

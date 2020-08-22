@@ -70,4 +70,10 @@ public interface SetmealDao {
      * @param id
      */
     void deleteById(int id);
+
+    /**
+     * 查询所有
+     * @return
+     */
+    List<Setmeal> findAll();
 }

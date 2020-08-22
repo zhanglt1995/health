@@ -52,4 +52,10 @@ public interface SetmealService {
      * @return
      */
     List<Integer> findCheckgroupIdsBySetmealId(int id);
+
+    /**
+     * 查询所有
+     * @return
+     */
+    List<Setmeal> findAll();
 }
