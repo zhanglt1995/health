@@ -36,4 +36,13 @@ public class SetmealMobileController {
         });
         return new Result(true, MessageConstants.GET_SETMEAL_LIST_SUCCESS,list);
     }
+
+    @GetMapping("/findDetailById")
+    public Result findDetailById(int id){
+        // 调用服务查询详情
+        Setmeal setmeal = setmealService.findDetailById(id);
+        // 设置图片的完整路径
+        setmeal.setImg(QiNiuUtils.DOMAIN + setmeal.getImg());
+        return new Result(true, MessageConstants.QUERY_SETMEAL_SUCCESS,setmeal);
+    }
 }

@@ -32,8 +32,7 @@ public class OrderSettingServiceImpl implements OrderSettingService {
             if(null != osInDB){
                 // 数据库存在这个预约设置, 已预约数量不能大于可预约数量
                 if(osInDB.getReservations() > orderSetting.getNumber()){
-                    throw new HealthException("已预约数量不能大于可预约数量");
-                    //throw new HealthException(orderSetting.getOrderDate() + " 中已预约数量不能大于可预约数量");
+                    throw new HealthException(orderSetting.getOrderDate() + " 中已预约数量不能大于可预约数量");
                 }
                 orderSettingDao.updateNumber(orderSetting);
             }else{

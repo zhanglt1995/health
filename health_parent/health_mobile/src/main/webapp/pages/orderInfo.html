@@ -145,7 +145,7 @@
                     }
                 },
                 mounted(){
-                    axios.post("/setmeal/findById.do?id=" + id).then((response) => {
+                    axios.get("/setmeal/findDetailById.do?id=" + id).then((response) => {
                         this.setmeal = response.data.data;
                     });
                 }

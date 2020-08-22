@@ -2,6 +2,7 @@ package com.zlt.health.service;
 
 import com.zlt.health.VO.PageResult;
 import com.zlt.health.VO.QueryPageBean;
+import com.zlt.health.exception.HealthException;
 import com.zlt.health.pojo.Setmeal;
 
 import java.util.List;
@@ -44,7 +45,7 @@ public interface SetmealService {
      * 删除
      * @param id
      */
-    void deleteById(int id);
+    void deleteById(int id) throws HealthException;
 
     /**
      * 查询检查组集合
@@ -58,4 +59,11 @@ public interface SetmealService {
      * @return
      */
     List<Setmeal> findAll();
+
+    /**
+     * 根据id查询
+     * @param id
+     * @return
+     */
+    Setmeal findDetailById(int id);
 }

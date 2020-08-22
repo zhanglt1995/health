@@ -1,5 +1,6 @@
 package com.zlt.health.service;
 
+import com.zlt.health.exception.HealthException;
 import com.zlt.health.pojo.OrderSetting;
 
 import java.util.List;
@@ -15,7 +16,7 @@ public interface OrderSettingService {
      * 批量导入
      * @param orderSettingList
      */
-    void add(List<OrderSetting> orderSettingList);
+    void add(List<OrderSetting> orderSettingList) throws HealthException;
 
     /**
      * 根据月份获取预约信息
@@ -28,5 +29,5 @@ public interface OrderSettingService {
      * 更改数量
      * @param orderSetting
      */
-    void editNumberByDate(OrderSetting orderSetting);
+    void editNumberByDate(OrderSetting orderSetting) throws HealthException;
 }
