@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zlt.health.dao.UserDao">
+
+    <resultMap id="userRoleMap" type="com.zlt.health.pojo.User">
+        <id property="id" column="id"></id>
+        <collection property="roles" ofType="com.zlt.health.pojo.Role" column="id"
+                    select="com.zlt.health.dao.UserDao.findRolesByUserId"></collection>
+    </resultMap>
+    <select id="getUserByUsername" parameterType="string" resultMap="userRoleMap">
+        select * from t_user where username = #{username}
+    </select>
+
+    <resultMap id="rolePermissionMap" type="com.zlt.health.pojo.Role">
+        <id property="id" column="id"></id>
+        <collection property="permissions" column="id" ofType="com.zlt.health.pojo.Permission"
+                    select="com.zlt.health.dao.UserDao.findPermissionsByRoleId"></collection>
+    </resultMap>
+    <select id="findRolesByUserId" parameterType="int" resultMap="rolePermissionMap">
+        select * from t_role where id in (select role_id from t_user_role where user_id = #{userId})
+    </select>
+    <select id="findPermissionsByRoleId" parameterType="int" resultType="com.zlt.health.pojo.Permission">
+        select * from t_permission where id in (select permission_id from t_role_permission where role_id = #{roleId})
+    </select>
+</mapper>

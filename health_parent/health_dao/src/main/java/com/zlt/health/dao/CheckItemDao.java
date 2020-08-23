@@ -48,4 +48,11 @@ public interface CheckItemDao {
      * @return
      */
     List<Integer> findByGroupId(@Param("groupId") Integer groupId);
+
+    /**
+     * 根据id查询，用于数据回显
+     * @param id
+     * @return
+     */
+    CheckItem findById(Integer id);
 }

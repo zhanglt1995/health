@@ -83,6 +83,8 @@ public class SetmealServiceImpl implements SetmealService {
                 setmealDao.addSetmealCheckGroup(setmeal.getId(), checkgroupId);
             }
         }
+        // 修改套餐后需要重新生成静态页面
+        generateMobileStaticHtml();
     }
 
     @Override
@@ -98,6 +100,9 @@ public class SetmealServiceImpl implements SetmealService {
         setmealDao.deleteSetmealCheckGroup(id);
         // 删除套餐数据
         setmealDao.deleteById(id);
+
+        //删除套餐后需要重新生成静态页面
+        generateMobileStaticHtml();
     }
 
     @Override

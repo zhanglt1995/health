@@ -13,15 +13,30 @@ import com.aliyuncs.profile.IClientProfile;
  * 短信发送工具类
  */
 public class SMSUtils {
-	public static final String VALIDATE_CODE = "SMS_189616640";//发送短信验证码
-	public static final String ORDER_NOTICE = "SMS_159771588";//体检预约成功通知
-	private static final String SIGN_NAEM = "黑马程序员";// 短信的签名
+	/**
+	 * 发送短信验证码
+	 */
+	public static final String VALIDATE_CODE = "SMS_189616640";
+	/**
+	 * 体检预约成功通知
+	 */
+	public static final String ORDER_NOTICE = "SMS_159771588";
+	/**
+	 * 短信的签名
+	 */
+	private static final String SIGN_NAEM = "黑马程序员";
 	private static final String PARAMETER_NAME="code";
-	private static final String ACCESS_KEY="LTAI4GERJj7v71F3FKjw3z2A"; //你的AccessKey ID
-	private static final String SECRET_KEY="dIVZnHGdUTYbqOKMlxZ7R7jXVcnPoz"; //你的AccessKey Secret
+	/**
+	 * 你的AccessKey ID
+	 */
+	private static final String ACCESS_KEY="LTAI4GERJj7v71F3FKjw3z2A";
+	/**
+	 * 你的AccessKey Secret
+	 */
+	private static final String SECRET_KEY="dIVZnHGdUTYbqOKMlxZ7R7jXVcnPoz";
 
 	public static void main(String[] args) throws ClientException {
-		SMSUtils.sendShortMessage(VALIDATE_CODE,"13652431027","666666");
+		SMSUtils.sendShortMessage(VALIDATE_CODE,"18771015877","666666");
 	}
 
 	/**

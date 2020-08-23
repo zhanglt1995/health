@@ -33,9 +33,6 @@ public class SetmealController {
     @Reference
     private SetmealService setmealService;
 
-    @Autowired
-    private JedisPool jedisPool;
-
     @PostMapping("/upload")
     public Result upload(MultipartFile imgFile){
         // 获取前台传输的文件
@@ -44,19 +41,13 @@ public class SetmealController {
         String ext = originalFilename.substring(originalFilename.lastIndexOf("."));
         // 生成唯一的文件名
         String uniqueName = UUID.randomUUID().toString() + ext;
-        // 上传的图片，调用QiNiuUtils把图片上传到七牛
-        Jedis jedis = jedisPool.getResource();
+
         try {
+            // 上传的图片，调用QiNiuUtils把图片上传到七牛
             QiNiuUtils.uploadViaByte(imgFile.getBytes(), uniqueName);
-            // 保存所有上传的图片到redis集合中
-            jedis.sadd(RedisConstants.SETMEAL_PIC_RESOURCES, uniqueName);
         } catch (Exception e) {
             e.printStackTrace();
             return new Result(false, MessageConstants.PIC_UPLOAD_FAIL);
-        } finally {
-            if(null != jedis) {
-                jedis.close(); // 返回jedis连接池
-            }
         }
         Map<String,String> dataMap = new HashMap<String,String>();
         dataMap.put("imgName", uniqueName);
@@ -68,39 +59,24 @@ public class SetmealController {
     public Result add(@RequestBody Setmeal setmeal, Integer[] checkgroupIds){
         // 调用业务服务添加
         setmealService.add(setmeal, checkgroupIds);
-        // 添加成功，要记录有用的图片到redis集合中
-        Jedis jedis = jedisPool.getResource();
-        jedis.sadd(RedisConstants.SETMEAL_PIC_DB_RESOURCES, setmeal.getImg());
-        jedis.close();
+
         // 响应结果
         return new Result(true, MessageConstants.ADD_SETMEAL_SUCCESS);
     }
 
     @PostMapping("/update")
     public Result update(@RequestBody Setmeal setmeal, Integer[] checkgroupIds){
-        Jedis jedis = jedisPool.getResource();
-        // 旧的套餐数据
-        Setmeal oldSetmeal = setmealService.findById(setmeal.getId());
         // 调用业务服务修改
         setmealService.update(setmeal, checkgroupIds);
-        // 先删除旧图片
-        jedis.srem(RedisConstants.SETMEAL_PIC_DB_RESOURCES, oldSetmeal.getImg());
-        // 修改时，有可能图片也被改，即没有改图片，set集合，也不会重复
-        jedis.sadd(RedisConstants.SETMEAL_PIC_DB_RESOURCES, setmeal.getImg());
-        jedis.close();
+
         // 响应结果
         return new Result(true, MessageConstants.EDIT_SETMEAL_SUCCESS);
     }
 
     @PostMapping("/deleteById")
     public Result deleteById(int id){
-        // 查询要删除的套餐图片名称
-        Setmeal setmeal = setmealService.findById(id);
         // 调用服务删除
         setmealService.deleteById(id);
-        Jedis jedis = jedisPool.getResource();
-        // 删除旧图片
-        jedis.srem(RedisConstants.SETMEAL_PIC_DB_RESOURCES, setmeal.getImg());
         return new Result(true, MessageConstants.DELETE_SETMEAL_SUCCESS);
     }
 
@@ -115,13 +91,12 @@ public class SetmealController {
     public Result findById(int id){
         // 调用服务查询
         Setmeal setmeal = setmealService.findById(id);
-        // 前端要显示图片需要全路径
-        // setmeal.setImg(QiNiuUtils.DOMAIN + setmeal.getImg());
-        // setmeal通过上面的语句，img代表全路径=> formData绑定， img也是全路径 => 提交过来的setmeal.img全路径, 截取字符串 获取图片的名称
-        // 封装到map中，解决图片路径问题
-        Map<String,Object> resultMap = new HashMap<String,Object>();
-        resultMap.put("setmeal", setmeal); // formData
-        resultMap.put("imageUrl", QiNiuUtils.DOMAIN + setmeal.getImg()); // imageUrl
+        // 将数据封装到map集合中
+        Map<String,Object> resultMap = new HashMap<>();
+        // formData
+        resultMap.put("setmeal", setmeal);
+        // 前台的图片全路径
+        resultMap.put("imageUrl", QiNiuUtils.DOMAIN + setmeal.getImg());
         return new Result(true, MessageConstants.QUERY_SETMEAL_SUCCESS,resultMap);
     }
 

@@ -7,6 +7,7 @@ import com.zlt.health.VO.Result;
 import com.zlt.health.constant.MessageConstants;
 import com.zlt.health.pojo.CheckItem;
 import com.zlt.health.service.CheckItemService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.ws.rs.Path;
@@ -31,15 +32,23 @@ public class CheckItemController {
     }
 
     @PostMapping("/add")
+    @PreAuthorize("hasAuthority('CHECKITEM_ADD')")
     public Result add(@RequestBody CheckItem checkItem){
         checkItemService.add(checkItem);
         return new Result(true, MessageConstants.ADD_CHECKITEM_SUCCESS);
     }
 
     @PostMapping("/findPage")
+    @PreAuthorize("hasAuthority('CHECKITEM_QUERY')")
     public Result findPage(@RequestBody QueryPageBean queryPageBean){
         PageResult<CheckItem> pageResult = checkItemService.findPage(queryPageBean);
         return new Result(true,MessageConstants.QUERY_CHECKITEM_SUCCESS,pageResult);
+    }
+
+    @GetMapping("/findById/{id}")
+    public Result findById(@PathVariable("id") Integer id){
+        CheckItem checkItem = checkItemService.findById(id);
+        return new Result(true,MessageConstants.DELETE_CHECKITEM_SUCCESS,checkItem);
     }
 
     @PostMapping("/update")

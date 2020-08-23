@@ -65,4 +65,9 @@ public class CheckItemServiceImpl implements CheckItemService {
         List<Integer> checkItemIds = checkItemDao.findByGroupId(checkGroupId);
         return checkItemIds;
     }
+
+    @Override
+    public CheckItem findById(Integer id) {
+        return checkItemDao.findById(id);
+    }
 }

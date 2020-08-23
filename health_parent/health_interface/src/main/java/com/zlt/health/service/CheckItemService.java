@@ -49,4 +49,11 @@ public interface CheckItemService {
      * @return
      */
     List<Integer> findCheckItemIdsByCheckGroupId(Integer checkGroupId);
+
+    /**
+     * 根据id查询，用于数据回显
+     * @param id
+     * @return
+     */
+    CheckItem findById(Integer id);
 }

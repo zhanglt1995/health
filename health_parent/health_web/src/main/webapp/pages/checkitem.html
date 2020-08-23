@@ -311,7 +311,15 @@
                     this.resetForm();
                     this.dialogFormVisible4Edit = true;
                     // 发送异步请求，数据回显(向这种可以从前台拿到所有要回显的数据到底有没有必要再发一次异步请求)
-                    this.formData = row;
+                    // 有必要，要向用户展示最实时的数据，前台的数据可能已经被修改过了
+                    axios.get('/checkitem/findById/'+row.id+'.do').then(res=>{
+                        if(res.data.flag){
+                            this.formData = res.data.data;
+                        }else {
+                            this.$message.error(res.data.message);
+                        }
+                    })
+
 
                 },
                 //切换页码

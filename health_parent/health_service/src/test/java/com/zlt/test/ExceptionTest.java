@@ -4,6 +4,7 @@ import com.zlt.health.exception.HealthException;
 import com.zlt.health.pojo.OrderSetting;
 import com.zlt.health.service.impl.OrderSettingServiceImpl;
 import org.junit.Test;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -46,5 +47,11 @@ public class ExceptionTest {
             System.out.println(e.getErrorMsg());
             e.printStackTrace();
         }
+    }
+
+    @Test
+    public void test04(){
+        BCryptPasswordEncoder cryptPasswordEncoder = new BCryptPasswordEncoder();
+        System.out.println(cryptPasswordEncoder.encode("admin"));
     }
 }

@@ -31,4 +31,7 @@
         select * from t_checkitem where id in
         (select checkitem_id from t_checkgroup_checkitem where checkgroup_id=#{groupId})
     </select>
+    <select id="findById" parameterType="int" resultType="com.zlt.health.pojo.CheckItem">
+        select * from t_checkitem where id = #{id}
+    </select>
 </mapper>
