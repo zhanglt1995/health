@@ -43,7 +43,7 @@ public class ValidateCodeController {
             Integer code = ValidateCodeUtils.generateValidateCode(6);
             try {
                 // 发送验证码
-                // SMSUtils.sendShortMessage(SMSUtils.VALIDATE_CODE, telephone, code + "");
+                SMSUtils.sendShortMessage(SMSUtils.VALIDATE_CODE, telephone, code + "");
                 // 存入redis，有效时间为15分钟
                 jedis.setex(key, 5*60, code + "");
                 // 返回成功

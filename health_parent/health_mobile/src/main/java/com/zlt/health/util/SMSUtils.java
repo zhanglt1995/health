@@ -16,7 +16,7 @@ public class SMSUtils {
 	/**
 	 * 发送短信验证码
 	 */
-	public static final String VALIDATE_CODE = "SMS_189616640";
+	public static final String VALIDATE_CODE = "SMS_200182927";
 	/**
 	 * 体检预约成功通知
 	 */
@@ -24,16 +24,16 @@ public class SMSUtils {
 	/**
 	 * 短信的签名
 	 */
-	private static final String SIGN_NAEM = "黑马程序员";
+	private static final String SIGN_NAEM = "健康公众号验证码";
 	private static final String PARAMETER_NAME="code";
 	/**
 	 * 你的AccessKey ID
 	 */
-	private static final String ACCESS_KEY="LTAI4GERJj7v71F3FKjw3z2A";
+	private static final String ACCESS_KEY= "LTAI4GDCHxiqYXmk8NBqCmf7";
 	/**
 	 * 你的AccessKey Secret
 	 */
-	private static final String SECRET_KEY="dIVZnHGdUTYbqOKMlxZ7R7jXVcnPoz";
+	private static final String SECRET_KEY="BH3wWtFQzy4nmRc48dciAfP6YmZ3Ry";
 
 	public static void main(String[] args) throws ClientException {
 		SMSUtils.sendShortMessage(VALIDATE_CODE,"18771015877","666666");

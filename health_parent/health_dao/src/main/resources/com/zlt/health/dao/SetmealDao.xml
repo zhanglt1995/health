@@ -75,19 +75,25 @@
     </resultMap>
 
     <select id="findDetailById" parameterType="int" resultMap="setmealDetailMap">
-    select
-        s.*,
-        sg.checkgroup_id, cg.name checkgroup_name, cg.remark as checkgroup_remark,
-        cc.checkitem_id, ci.name checkitem_name
-    From
-        t_setmeal s, t_setmeal_checkgroup sg,
-        t_checkgroup cg, t_checkgroup_checkitem cc,
-        t_checkitem ci
-    where
-        s.id=sg.setmeal_id and sg.checkgroup_id=cg.id
-        and cg.id=cc.checkgroup_id and cc.checkitem_id=ci.id
-        and s.id=#{id}
-</select>
+        select
+            s.*,
+            sg.checkgroup_id, cg.name checkgroup_name, cg.remark as checkgroup_remark,
+            cc.checkitem_id, ci.name checkitem_name
+        From
+            t_setmeal s, t_setmeal_checkgroup sg,
+            t_checkgroup cg, t_checkgroup_checkitem cc,
+            t_checkitem ci
+        where
+            s.id=sg.setmeal_id and sg.checkgroup_id=cg.id
+            and cg.id=cc.checkgroup_id and cc.checkitem_id=ci.id
+            and s.id=#{id}
+    </select>
+
+    <select id="findSetmealNameAndCountList" resultType="map">
+        select s.name,IFNULL(o.value,0) value from t_setmeal s left join
+        (select setmeal_id,count(id) value from t_order group by setmeal_id) o
+        on s.id = o.setmeal_id
+    </select>
 
 
 </mapper>

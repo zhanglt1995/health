@@ -6,6 +6,7 @@ import com.zlt.health.exception.HealthException;
 import com.zlt.health.pojo.Setmeal;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author zhanglitao
@@ -66,4 +67,10 @@ public interface SetmealService {
      * @return
      */
     Setmeal findDetailById(int id);
+
+    /**
+     * 获取套餐名和数量的集合
+     * @return
+     */
+    List<Map<String, Object>> findSetmealNameAndCountList();
 }

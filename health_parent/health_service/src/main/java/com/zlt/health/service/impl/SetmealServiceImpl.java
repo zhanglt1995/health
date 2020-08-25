@@ -120,6 +120,11 @@ public class SetmealServiceImpl implements SetmealService {
         return setmealDao.findDetailById(id);
     }
 
+    @Override
+    public List<Map<String, Object>> findSetmealNameAndCountList() {
+        return setmealDao.findSetmealNameAndCountList();
+    }
+
     @Autowired
     private FreeMarkerConfigurer freeMarkerConfigurer;
 

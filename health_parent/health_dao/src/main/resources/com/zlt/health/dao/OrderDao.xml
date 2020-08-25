@@ -8,6 +8,26 @@
     </insert>
 
     <select id="getOrderByMemberIdAndMealId" parameterType="map" resultType="com.zlt.health.pojo.Order">
-
+        select * from t_order where member_id=#{memberId} and setmeal_id=#{setmealId} and orderDate = #{orderDate}
+    </select>
+    <select id="findOrderCountByDate" parameterType="string" resultType="int">
+        select count(1) from t_order where orderDate = #{reportDate}
+    </select>
+    <select id="findVisitsCountByDate" parameterType="string" resultType="int">
+        select count(1) from t_order where orderDate = #{reportDate} and orderStatus='已到诊'
+    </select>
+    <select id="findOrderCountBetweenDate" parameterType="map" resultType="int">
+        SELECT COUNT(*) FROM t_order WHERE orderDate between #{startDate} and #{endDate}
+    </select>
+    <select id="findVisitsCountBetweenDate" parameterType="map" resultType="int">
+        SELECT COUNT(*) FROM t_order WHERE orderDate between #{startDate} and #{endDate} AND orderStatus = '已到诊'
+    </select>
+    <select id="findHotSetmeal" resultType="map">
+        select s.name,IFNULL(o.value,0) setmeal_count,
+        IFNULL(o.value,0)/(select count(id) FROM t_order ) proportion,s.remark
+        from t_setmeal s left join
+        (select setmeal_id,count(id) value from t_order group by setmeal_id) o
+        on s.id = o.setmeal_id
+        order by setmeal_count desc limit 0,3
     </select>
 </mapper>

@@ -5,6 +5,7 @@ import com.zlt.health.pojo.Setmeal;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author zhanglitao
@@ -83,4 +84,10 @@ public interface SetmealDao {
      * @return
      */
     Setmeal findDetailById(int id);
+
+    /**
+     * 获取套餐和预约数量的集合
+     * @return
+     */
+    List<Map<String, Object>> findSetmealNameAndCountList();
 }

@@ -1,6 +1,10 @@
 package com.zlt.health.util;
 
 import java.text.SimpleDateFormat;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.temporal.TemporalAdjusters;
 import java.util.*;
 
 /**
@@ -67,6 +71,10 @@ public class DateUtils {
         SimpleDateFormat sdf = new SimpleDateFormat(pattern);
         String strDate = sdf.format(date);
         return strDate;
+    }
+
+    public static String getLocalDate(){
+        return LocalDate.now().toString().substring(0,10);
     }
 
     /**
@@ -152,92 +160,25 @@ public class DateUtils {
     }
 
     /**
-     * 根据年份获取年中周列表
-     *
-     * @param year 年分
-     * @return 周列表
-     * @throws Exception
-     */
-    public static Map<Integer, String> getWeeksOfYear(String year) throws Exception {
-        Date useDate = parseString2Date(year, "yyyy");
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(useDate);
-        //获取年中周数量
-        int weeksCount = cal.getWeeksInWeekYear();
-        Map<Integer, String> mapWeeks = new HashMap<>(55);
-        for (int i = 0; i < weeksCount; i++) {
-            cal.get(Calendar.DAY_OF_YEAR);
-            mapWeeks.put(i + 1, parseDate2String(getFirstDayOfWeek(cal.get(Calendar.YEAR), i)));
-        }
-        return mapWeeks;
-    }
-
-    /**
-     * 获取某年的第几周的开始日期
-     *
-     * @param year 年分
-     * @param week 周索引
-     * @return 开始日期
-     * @throws Exception
-     */
-    public static Date getFirstDayOfWeek(int year, int week) throws Exception {
-        Calendar c = new GregorianCalendar();
-        c.set(Calendar.YEAR, year);
-        c.set(Calendar.MONTH, Calendar.JANUARY);
-        c.set(Calendar.DATE, 1);
-
-        Calendar cal = (GregorianCalendar) c.clone();
-        cal.add(Calendar.DATE, week * 7);
-
-        return getFirstDayOfWeek(cal.getTime());
-    }
-
-    /**
-     * 获取某年的第几周的结束日期
-     *
-     * @param year 年份
-     * @param week 周索引
-     * @return 结束日期
-     * @throws Exception
-     */
-    public static Date getLastDayOfWeek(int year, int week) throws Exception {
-        Calendar c = new GregorianCalendar();
-        c.set(Calendar.YEAR, year);
-        c.set(Calendar.MONTH, Calendar.JANUARY);
-        c.set(Calendar.DATE, 1);
-
-        Calendar cal = (GregorianCalendar) c.clone();
-        cal.add(Calendar.DATE, week * 7);
-
-        return getLastDayOfWeek(cal.getTime());
-    }
-
-    /**
      * 获取当前时间所在周的开始日期
      *
-     * @param date 当前时间
      * @return 开始时间
      */
-    public static Date getFirstDayOfWeek(Date date) {
-        Calendar c = new GregorianCalendar();
-        c.setFirstDayOfWeek(Calendar.SUNDAY);
-        c.setTime(date);
-        c.set(Calendar.DAY_OF_WEEK, c.getFirstDayOfWeek());
-        return c.getTime();
+    public static String getFirstDayOfWeek() {
+        LocalDate localDate = LocalDate.now();
+        String firstDayOfWeek = localDate.with(DayOfWeek.MONDAY).toString().substring(0, 10);
+        return firstDayOfWeek;
     }
 
     /**
      * 获取当前时间所在周的结束日期
      *
-     * @param date 当前时间
      * @return 结束日期
      */
-    public static Date getLastDayOfWeek(Date date) {
-        Calendar c = new GregorianCalendar();
-        c.setFirstDayOfWeek(Calendar.SUNDAY);
-        c.setTime(date);
-        c.set(Calendar.DAY_OF_WEEK, c.getFirstDayOfWeek() + 6);
-        return c.getTime();
+    public static String getLastDayOfWeek() {
+        LocalDate localDate = LocalDate.now();
+        String lastDayOfWeek = localDate.with(DayOfWeek.SUNDAY).toString().substring(0, 10);
+        return lastDayOfWeek;
     }
     //获得上周一的日期
     public static Date geLastWeekMonday(Date date) {
@@ -279,18 +220,24 @@ public class DateUtils {
     }
 
     //获得本月一日的日期
-    public static Date getFirstDay4ThisMonth(){
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.DAY_OF_MONTH,1);
-        return calendar.getTime();
+    public static String getFirstDay4ThisMonth(){
+        LocalDate localDate = LocalDate.now();
+        String firstday = localDate.with(TemporalAdjusters.firstDayOfMonth()).toString().substring(0, 10);
+        return firstday;
     }
 
     public static void main(String[] args) {
         try {
             System.out.println("本周一" + parseDate2String(getThisWeekMonday()));
-            System.out.println("本月一日" + parseDate2String(getFirstDay4ThisMonth()));
+            System.out.println("本月一日" + getFirstDay4ThisMonth());
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public static String getLastDayOfThisMonth() {
+        LocalDate localDate = LocalDate.now();
+        String lastDay = localDate.with(TemporalAdjusters.lastDayOfMonth()).toString().substring(0, 10);
+        return lastDay;
     }
 }

@@ -1,8 +1,10 @@
 package com.zlt.health.dao;
 
 import com.zlt.health.pojo.Order;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -18,11 +20,48 @@ public interface OrderDao {
      * @param setmealId
      * @return
      */
-    Order getOrderByMemberIdAndMealId(Integer id, Date orderDate, Integer setmealId);
+    Order getOrderByMemberIdAndMealId(@Param("memberId") Integer memberId,@Param("orderDate") Date orderDate,
+                                      @Param("setmealId") Integer setmealId);
 
     /**
      * 添加预约信息
      * @param orderInfo
      */
     void add(Map orderInfo);
+
+    /**
+     * 获取今日预约数
+     * @param reportDate
+     * @return
+     */
+    Integer findOrderCountByDate(String reportDate);
+
+    /**
+     * 获取今日到诊数
+     * @param reportDate
+     * @return
+     */
+    Integer findVisitsCountByDate(String reportDate);
+
+    /**
+     * 获取时间段内的预约数
+     * @param startDate
+     * @param endDate
+     * @return
+     */
+    Integer findOrderCountBetweenDate(@Param("startDate") String startDate, @Param("endDate") String endDate);
+
+    /**
+     * 获取时间段内的到诊数
+     * @param startDate
+     * @param endDate
+     * @return
+     */
+    Integer findVisitsCountBetweenDate(@Param("startDate") String startDate, @Param("endDate") String endDate);
+
+    /**
+     * 获取热门套餐数据
+     * @return
+     */
+    List<Map<String, Object>> findHotSetmeal();
 }

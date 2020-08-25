@@ -1,7 +1,9 @@
 package com.zlt.health.dao;
 
 import com.zlt.health.pojo.Member;
+import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -22,4 +24,18 @@ public interface MemberDao {
      * @param orderInfo
      */
     void add(Map orderInfo);
+
+    /**
+     * 根据月份获取会员数量
+     * @param month
+     * @return
+     */
+    Integer findMemberCountByMonth(@Param("month") String month);
+
+    /**
+     * 根据条件查询会员数量
+     * @param date
+     * @return
+     */
+    Integer findMemberTotalCountByCondition(@Param("date") String date);
 }

@@ -10,4 +10,17 @@
     <select id="getMemberByPhoneNum" parameterType="string" resultType="com.zlt.health.pojo.Member">
 
     </select>
+
+    <select id="findMemberCountByMonth" parameterType="string" resultType="int">
+        select count(id) from t_member where regTime &lt; #{month}
+    </select>
+
+    <select id="findMemberTotalCountByCondition" parameterType="string" resultType="int">
+        select count(id) from t_member
+        <where>
+            <if test="date != null and date.length > 0">
+                regTime &gt;= #{date}
+            </if>
+        </where>
+    </select>
 </mapper>

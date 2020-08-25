@@ -12,6 +12,7 @@
     <artifactId>health_common</artifactId>
 
     <dependencies>
+
         <dependency>
             <groupId>com.aliyun</groupId>
             <artifactId>aliyun-java-sdk-core</artifactId>
@@ -154,6 +155,17 @@
         <dependency>
             <groupId>org.freemarker</groupId>
             <artifactId>freemarker</artifactId>
+        </dependency>
+
+        <!-- 导入iText报表 -->
+        <dependency>
+            <groupId>com.lowagie</groupId>
+            <artifactId>itext</artifactId>
+        </dependency>
+        <!-- 导入iText报表，支持中文 -->
+        <dependency>
+            <groupId>com.itextpdf</groupId>
+            <artifactId>itext-asian</artifactId>
         </dependency>
     </dependencies>
 
