@@ -60,8 +60,7 @@ public class OrderController {
             return new Result(false, MessageConstants.VALIDATECODE_ERROR);
         }
         jedis.del(telKey);// 清除验证码，已经使用过了
-        // 设置预约类型
-        orderInfo.put("orderType", Order.ORDERTYPE_WEIXIN);
+
         // 调用服务预约
         Order order = orderService.submitOrder(orderInfo);
         return new Result(true, MessageConstants.ORDER_SUCCESS,order);
@@ -76,49 +75,47 @@ public class OrderController {
     @GetMapping("/exportSetmealInfo")
     public void exportSetmealInfo(Integer id, HttpServletRequest request,
                                   HttpServletResponse response) throws Exception {
-        // 使用订单ID，查询订单信息（需要包括套餐ID）
+        // 根据订单id查询出相应的数据
         Map<String,Object> map = orderService.findById(id);
         // 获取套餐ID
         Integer setmealId = (Integer)map.get("setmealId");
-        // 使用套餐ID，查询套餐信息
+        // 使用套餐ID，查询套餐详细信息，包括检查组和检查项
         Setmeal setmeal = setmealService.findDetailById(setmealId);
-        // 下载导出
+
         // 设置头信息
         response.setContentType("application/pdf");
+        // 设置下载后的文件名
         String filename = "exportPDF.pdf";
 
         // 设置以附件的形式导出
-        response.setHeader("Content-Disposition",
-                "attachment;filename=" + filename);
+        response.setHeader("Content-Disposition", "attachment;filename=" + filename);
 
-        // 生成PDF文件
+        // 创建文件
         Document document = new Document();
+        // 创建PDF生成器，将最后的文件写出到输出流
         PdfWriter.getInstance(document, response.getOutputStream());
         document.open();
 
-        // 设置表格字体
+        // 设置表格支持中文，以及字体样式
         BaseFont cn = BaseFont.createFont("STSongStd-Light", "UniGB-UCS2-H",false);
         Font font = new Font(cn, 10, Font.NORMAL, Color.GRAY);
 
         // 写PDF数据
-        // 输出订单和套餐信息
-        // 体检人
+        // 订单信息
         document.add(new Paragraph("体检人："+(String)map.get("member"), font));
-        // 体检套餐
         document.add(new Paragraph("体检套餐："+(String)map.get("setmeal"), font));
-        // 体检日期
         document.add(new Paragraph("体检日期："+map.get("orderDate"), font));
-        // 预约类型
         document.add(new Paragraph("预约类型："+(String)map.get("orderType"), font));
 
-        // 向document 生成pdf表格
-        Table table = new Table(3);//创建3列的表格
+        // 向document 创建表格
+        Table table = new Table(3);
 
         // 写表头
         table.addCell(buildCell("项目名称", font));
         table.addCell(buildCell("项目内容", font));
         table.addCell(buildCell("项目解读", font));
-        // 写数据
+        // 写数据，可以做一个非空判断，防止出现空指针异常
+        // 将套餐信息保存到表格中
         if(setmeal.getCheckGroups() != null){
             for (CheckGroup checkGroup : setmeal.getCheckGroups()) {
                 table.addCell(buildCell(checkGroup.getName(), font));
@@ -136,7 +133,13 @@ public class OrderController {
         document.close();
     }
 
-    // 传递内容和字体样式，生成单元格
+    /**
+     * 传递内容和字体样式，生成单元格
+     * @param content
+     * @param font
+     * @return
+     * @throws BadElementException
+     */
     private Cell buildCell(String content, Font font)
             throws BadElementException {
         Phrase phrase = new Phrase(content, font);

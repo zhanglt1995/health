@@ -167,6 +167,12 @@
             <groupId>com.itextpdf</groupId>
             <artifactId>itext-asian</artifactId>
         </dependency>
+
+        <!--Jasper的依赖-->
+        <dependency>
+            <groupId>net.sf.jasperreports</groupId>
+            <artifactId>jasperreports</artifactId>
+        </dependency>
     </dependencies>
 
 </project>

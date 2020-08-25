@@ -6,8 +6,11 @@ import com.zlt.health.constant.MessageConstants;
 import com.zlt.health.service.MemberService;
 import com.zlt.health.service.ReportService;
 import com.zlt.health.service.SetmealService;
+import net.sf.jasperreports.engine.*;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.apache.xmlbeans.impl.xb.xsdschema.Public;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,6 +21,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.math.BigDecimal;
+import java.security.PublicKey;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -146,5 +150,35 @@ public class ReportController {
             e.printStackTrace();
         }
 
+    }
+
+    @GetMapping("/exportBusinessReportPDF")
+    public void exportBusinessReportPDF(HttpServletRequest request, HttpServletResponse response){
+        try {
+            // 指定模板地址
+            String jrxmlPath = request.getSession().getServletContext().getRealPath("template/health_business.jrxml");
+            String jasperPath = request.getSession().getServletContext().getRealPath("template/health_business.jasper");
+
+            // 编译模板
+            JasperCompileManager.compileReportToFile(jrxmlPath,jasperPath);
+
+            // 获取数据
+            Map<String, Object> reportData = reportService.getBusinessReportData();
+
+            // 获取集合中的数据
+            List<Map<String,Object>> list = (List<Map<String, Object>>) reportData.get("hotSetmeal");
+
+            // 填充数据
+            JasperPrint jasperPrint = JasperFillManager.fillReport(jasperPath, reportData, new JRBeanCollectionDataSource(list));
+
+            // 设置输出头
+            response.setContentType("application/pdf");
+            response.setHeader("content-Disposition", "attachment;filename=report.pdf");
+
+            // 输出
+            JasperExportManager.exportReportToPdfStream(jasperPrint,response.getOutputStream());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

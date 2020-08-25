@@ -12,6 +12,7 @@ import com.zlt.health.pojo.OrderSetting;
 import com.zlt.health.service.OrderService;
 import com.zlt.health.util.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.Map;
@@ -34,6 +35,7 @@ public class OrderServiceImpl implements OrderService {
     private MemberDao memberDao;
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public Order submitOrder(Map orderInfo) {
         //1、检查用户所选择的预约日期是否已经提前进行了预约设置，如果没有设置则无法进行预约
         String orderDateStr = (String) orderInfo.get("orderDate");
@@ -56,27 +58,35 @@ public class OrderServiceImpl implements OrderService {
         String phoneNum = (String) orderInfo.get("telephone");
         Member member = memberDao.getMemberByPhoneNum(phoneNum);
         if(member == null){
+            member = new Member();
+            member.setIdCard((String) orderInfo.get("idCard"));
+            member.setPhoneNumber(phoneNum);
+            member.setName((String) orderInfo.get("name"));
+            member.setSex((String) orderInfo.get("sex"));
+            member.setRegTime(new Date());
             // 注册用户
-            memberDao.add(orderInfo);
+            memberDao.add(member);
         }
-        Integer setmealId = (Integer) orderInfo.get("setmealId");
+        Integer setmealId = Integer.valueOf((String) orderInfo.get("setmealId"));
         Order order = orderDao.getOrderByMemberIdAndMealId(member.getId(),orderDate,setmealId);
 
         if(order != null){
             throw new HealthException(MessageConstants.HAS_ORDERED);
         }
-
-        orderInfo.put("memberId",member.getId());
+        // 设置order数据的值
+        order = new Order();
+        order.setMemberId(member.getId());
+        order.setOrderDate(orderDate);
+        order.setOrderStatus(Order.ORDERSTATUS_NO);
+        order.setOrderType(Order.ORDERTYPE_WEIXIN);
+        order.setSetmealId(setmealId);
         // 添加预约信息
-        orderDao.add(orderInfo);
+        orderDao.add(order);
         //3、检查用户是否重复预约（同一个用户在同一天预约了同一个套餐），如果是重复预约则无法完成再次预约
 
-        //4、检查当前用户是否为会员，如果是会员则直接完成预约，如果不是会员则自动完成注册并进行预约
-
         //5、预约成功，更新当日的已预约人数
-
-        orderSettingDao.updateNumber(orderSetting);
-        return null;
+        orderSettingDao.updateReservations(orderSetting);
+        return order;
     }
 
     @Override

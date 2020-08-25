@@ -40,6 +40,7 @@
         <jedis.version>2.9.0</jedis.version>
         <quartz.version>2.2.1</quartz.version>
         <freemarker>2.3.23</freemarker>
+        <jasperreports>6.8.0</jasperreports>
     </properties>
     <!-- 依赖管理标签  必须加 -->
     <dependencyManagement>
@@ -257,6 +258,13 @@
                 <groupId>com.itextpdf</groupId>
                 <artifactId>itext-asian</artifactId>
                 <version>5.2.0</version>
+            </dependency>
+
+            <!--jasper的相关依赖-->
+            <dependency>
+                <groupId>net.sf.jasperreports</groupId>
+                <artifactId>jasperreports</artifactId>
+                <version>${jasperreports}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

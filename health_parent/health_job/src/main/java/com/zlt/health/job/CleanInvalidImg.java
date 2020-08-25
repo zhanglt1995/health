@@ -21,7 +21,7 @@ public class CleanInvalidImg {
     /**
      * 清理垃圾图片的执行方法
      */
-    @Scheduled(cron = "0 0/2 * * * ? ")
+    @Scheduled(cron = "0 0 4 * * ? ")
     public void cleanImg(){
         // 获取七牛云上的所有图片数据
         List<String> QiNiuImg = QiNiuUtils.listFile();

@@ -542,6 +542,7 @@ label input[type="radio"]:checked {
 	text-align: center;
 	overflow: hidden;
 	line-height: 40px;
+	font-weight: bold;
 }
 .excelTitle .el-button{
 	float: left;

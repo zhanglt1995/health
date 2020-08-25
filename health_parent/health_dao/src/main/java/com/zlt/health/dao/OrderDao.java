@@ -2,6 +2,7 @@ package com.zlt.health.dao;
 
 import com.zlt.health.pojo.Order;
 import org.apache.ibatis.annotations.Param;
+import org.aspectj.weaver.ast.Or;
 
 import java.util.Date;
 import java.util.List;
@@ -25,9 +26,9 @@ public interface OrderDao {
 
     /**
      * 添加预约信息
-     * @param orderInfo
+     * @param order
      */
-    void add(Map orderInfo);
+    void add(Order order);
 
     /**
      * 获取今日预约数

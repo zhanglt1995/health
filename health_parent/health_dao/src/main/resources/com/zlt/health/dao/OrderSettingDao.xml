@@ -10,6 +10,9 @@
     <update id="updateNumber" parameterType="OrderSetting">
         update t_ordersetting set number=#{number} where orderDate = #{orderDate}
     </update>
+    <update id="updateReservations" parameterType="OrderSetting">
+        update t_ordersetting set reservations=reservations+1 where orderDate = #{orderDate}
+    </update>
 
     <select id="findByOrderDate" parameterType="date" resultType="com.zlt.health.pojo.OrderSetting">
         select * From t_orderSetting where orderDate = #{orderDate}

@@ -32,8 +32,10 @@
             </div>
             <div class="app-container">
                 <div class="box" style="height: 900px">
+                    <el-button @click="exportExcel">导出Excel</el-button>
+                    <el-button @click="exportPDF">导出PDF</el-button>
                     <div class="excelTitle" >
-                        <el-button @click="exportExcel">导出Excel</el-button>运营数据统计
+                        运营数据统计
                     </div>
                     <div class="excelTime">日期：{{reportData.reportDate}}</div>
                     <table class="exceTable" cellspacing="0" cellpadding="0">
@@ -127,6 +129,9 @@
             methods:{
                 exportExcel(){
                     window.location.href = '/report/exportBusinessReport.do';
+                },
+                exportPDF(){
+                    location.href = '/report/exportBusinessReportPDF.do';
                 }
             }
         })

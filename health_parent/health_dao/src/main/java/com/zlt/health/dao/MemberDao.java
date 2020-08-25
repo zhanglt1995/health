@@ -21,9 +21,9 @@ public interface MemberDao {
 
     /**
      * 添加用户
-     * @param orderInfo
+     * @param member
      */
-    void add(Map orderInfo);
+    void add(Member member);
 
     /**
      * 根据月份获取会员数量
