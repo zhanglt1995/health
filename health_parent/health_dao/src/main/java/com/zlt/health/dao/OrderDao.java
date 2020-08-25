@@ -64,4 +64,11 @@ public interface OrderDao {
      * @return
      */
     List<Map<String, Object>> findHotSetmeal();
+
+    /**
+     * 根据id获取信息
+     * @param id
+     * @return
+     */
+    Map<String, Object> findById(Integer id);
 }

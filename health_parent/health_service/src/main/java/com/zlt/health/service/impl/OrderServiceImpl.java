@@ -78,4 +78,9 @@ public class OrderServiceImpl implements OrderService {
         orderSettingDao.updateNumber(orderSetting);
         return null;
     }
+
+    @Override
+    public Map<String, Object> findById(Integer id) {
+        return orderDao.findById(id);
+    }
 }

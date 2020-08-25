@@ -17,4 +17,11 @@ public interface OrderService {
      * @return
      */
     Order submitOrder(Map orderInfo) throws HealthException;
+
+    /**
+     * 根据id查询
+     * @param id
+     * @return
+     */
+    Map<String, Object> findById(Integer id);
 }

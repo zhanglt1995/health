@@ -90,4 +90,10 @@ public interface SetmealDao {
      * @return
      */
     List<Map<String, Object>> findSetmealNameAndCountList();
+
+    /**
+     * 获取数据库中的所有图片
+     * @return
+     */
+    List<String> findImgList();
 }

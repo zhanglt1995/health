@@ -125,6 +125,11 @@ public class SetmealServiceImpl implements SetmealService {
         return setmealDao.findSetmealNameAndCountList();
     }
 
+    @Override
+    public List<String> findImgList() {
+        return setmealDao.findImgList();
+    }
+
     @Autowired
     private FreeMarkerConfigurer freeMarkerConfigurer;
 

@@ -94,6 +94,9 @@
         (select setmeal_id,count(id) value from t_order group by setmeal_id) o
         on s.id = o.setmeal_id
     </select>
+    <select id="findImgList" resultType="string">
+        select img from t_setmeal
+    </select>
 
 
 </mapper>

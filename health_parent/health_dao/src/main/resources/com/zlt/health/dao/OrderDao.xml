@@ -30,4 +30,11 @@
         on s.id = o.setmeal_id
         order by setmeal_count desc limit 0,3
     </select>
+
+    <select id="findById" parameterType="int" resultType="map">
+        select o.setmeal_id setmealId,date_format(o.orderDate,'%Y-%m-%d') orderDate,o.orderType,
+        s.`name` setmeal,m.`name` member from t_order o,t_setmeal s,t_member m
+        where o.setmeal_id = s.id and o.member_id = m.id
+        and o.id = #{id}
+    </select>
 </mapper>
