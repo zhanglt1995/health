@@ -2,6 +2,7 @@ package com.zlt.health.service.impl;
 
 import com.alibaba.dubbo.config.annotation.Service;
 import com.zlt.health.dao.MemberDao;
+import com.zlt.health.pojo.Member;
 import com.zlt.health.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.CollectionUtils;
@@ -30,5 +31,15 @@ public class MemberServiceImpl implements MemberService {
             }
         }
         return monthCountList;
+    }
+
+    @Override
+    public Member findByTelephone(String telephone) {
+        return memberDao.getMemberByPhoneNum(telephone);
+    }
+
+    @Override
+    public void add(Member member) {
+        memberDao.add(member);
     }
 }

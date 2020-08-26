@@ -46,7 +46,7 @@ public interface MessageConstants {
     static final String LOGIN_SUCCESS = "登录成功";
     static final String VALIDATECODE_ERROR = "验证码输入错误";
     static final String QUERY_ORDER_SUCCESS = "查询预约信息成功";
-    static final String QUERY_ORDER_FAIL = "查询预约信息失败";
+    static final String LOGIN_TELEPHONE_COOKIE = "login_member_telephone";
     static final String QUERY_SETMEALLIST_SUCCESS = "查询套餐列表数据成功";
     static final String QUERY_SETMEALLIST_FAIL = "查询套餐列表数据失败";
     static final String QUERY_SETMEAL_SUCCESS = "查询套餐数据成功";

@@ -1,5 +1,7 @@
 package com.zlt.health.service;
 
+import com.zlt.health.pojo.Member;
+
 import java.util.List;
 
 /**
@@ -14,4 +16,17 @@ public interface MemberService {
      * @return
      */
     List<Integer> findMemberCountListByMonth(List<String> monthList);
+
+    /**
+     * 根据电话号码查找用户
+     * @param telephone
+     * @return
+     */
+    Member findByTelephone(String telephone);
+
+    /**
+     * 添加会员
+     * @param member
+     */
+    void add(Member member);
 }
