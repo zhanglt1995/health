@@ -3,6 +3,8 @@ package com.zlt.health.handle;
 
 import com.zlt.health.VO.Result;
 import com.zlt.health.exception.HealthException;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -23,11 +25,13 @@ public class GlobalExceptionHandle {
 
     @ExceptionHandler(Exception.class)
     public Result processException(Exception ex){
-        if(ex instanceof RuntimeException){
-            HealthException exception = (HealthException) ex;
-            return new Result(false,exception.getErrorMsg());
-        }
 
         return new Result(false, "服务器出了点问题，请稍后再试!!");
     }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    public Result handleAccessDeniedException(AccessDeniedException e){
+        return new Result(false, "权限不足");
+    }
+
 }
