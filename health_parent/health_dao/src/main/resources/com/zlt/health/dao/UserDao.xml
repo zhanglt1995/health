@@ -7,21 +7,46 @@
     <resultMap id="userRoleMap" type="com.zlt.health.pojo.User">
         <id property="id" column="id"></id>
         <collection property="roles" ofType="com.zlt.health.pojo.Role" column="id"
-                    select="com.zlt.health.dao.UserDao.findRolesByUserId"></collection>
+                    select="com.zlt.health.dao.RoleDao.findRolesByUserId"></collection>
     </resultMap>
+
     <select id="getUserByUsername" parameterType="string" resultMap="userRoleMap">
         select * from t_user where username = #{username}
     </select>
 
-    <resultMap id="rolePermissionMap" type="com.zlt.health.pojo.Role">
-        <id property="id" column="id"></id>
-        <collection property="permissions" column="id" ofType="com.zlt.health.pojo.Permission"
-                    select="com.zlt.health.dao.UserDao.findPermissionsByRoleId"></collection>
-    </resultMap>
-    <select id="findRolesByUserId" parameterType="int" resultMap="rolePermissionMap">
-        select * from t_role where id in (select role_id from t_user_role where user_id = #{userId})
+    <select id="findByPage" parameterType="string" resultType="com.zlt.health.pojo.User">
+        select * from t_user
     </select>
-    <select id="findPermissionsByRoleId" parameterType="int" resultType="com.zlt.health.pojo.Permission">
-        select * from t_permission where id in (select permission_id from t_role_permission where role_id = #{roleId})
-    </select>
+
+    <insert id="add" parameterType="com.zlt.health.pojo.User">
+        insert into t_user (birthday,gender,username,password,remark,station,telephone)
+        values (#{birthday},#{gender},#{username},#{password},#{remark},#{station},#{telephone})
+    </insert>
+
+    <insert id="addUserRole" parameterType="map">
+        insert into t_user_role (user_id,role_id) values
+        <foreach collection="roleIds" item="roleId" separator=",">
+            (#{userId}, #{roleId})
+        </foreach>
+    </insert>
+
+    <update id="update" parameterType="com.zlt.health.pojo.User">
+        update t_user set
+          birthday=#{birthday},
+          gender=#{gender},
+          username=#{username},
+          password=#{password},
+          remark=#{remark},
+          station=#{station},
+          telephone=#{telephone}
+        where id = #{id}
+    </update>
+
+    <delete id="deleteUserById" parameterType="int">
+        delete from t_user where id = #{id}
+    </delete>
+
+    <delete id="deleteUserRoleByUserId" parameterType="int">
+        delete from t_user_role where user_id = #{userId}
+    </delete>
 </mapper>

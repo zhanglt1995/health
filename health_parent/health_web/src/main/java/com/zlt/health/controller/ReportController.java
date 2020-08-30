@@ -52,7 +52,7 @@ public class ReportController {
         for (Long i = 11L; i >=0 ; i--) {
             monthList.add(localDate.minusMonths(i).toString().substring(0, 7));
         }
-
+        // 根据月份集合获取会员数量总数
         List<Integer> memberCountList = memberService.findMemberCountListByMonth(monthList);
 
         Map<String,Object> resultMap = new HashMap();

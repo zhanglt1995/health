@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zlt.health.dao.MenuDao">
+
+    <resultMap id="menuMenuMap" type="com.zlt.health.pojo.Menu">
+        <id property="id" column="id"/>
+        <result property="name" column="title"/>
+        <result property="icon" column="icon"/>
+        <result property="path" column="path"/>
+        <collection property="children" ofType="com.zlt.health.pojo.Menu">
+            <result property="path" column="cpath"/>
+            <result property="name" column="ctitle"/>
+            <result property="linkUrl" column="linkUrl"/>
+        </collection>
+    </resultMap>
+    <select id="findMenuListByUserId" parameterType="int" resultMap="menuMenuMap">
+        select m1.id,m1.name title,m1.path,m1.icon,m2.name ctitle,m2.linkUrl,m2.path cpath from t_menu m1,t_menu m2 where m1.level = 1
+        and m1.id in (
+          select menu_id from t_role_menu where role_id in (select role_id from t_user_role where user_id = #{userId})
+        ) and m1.id = m2.parentMenuId and m2.id in  (
+          select menu_id from t_role_menu where role_id in (select role_id from t_user_role where user_id = #{userId})
+        )
+    </select>
+    <select id="findAll" resultType="com.zlt.health.pojo.Menu">
+        select * from t_menu
+    </select>
+</mapper>

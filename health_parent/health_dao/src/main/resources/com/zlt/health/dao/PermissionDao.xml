@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zlt.health.dao.PermissionDao">
+
+    <insert id="add" parameterType="com.zlt.health.pojo.Permission">
+        insert into t_permission (name,keyword,description)
+        values (#{name},#{keyword},#{description})
+    </insert>
+    <update id="update" parameterType="com.zlt.health.pojo.Permission">
+        update t_permission set
+          name=#{name},keyword=#{keyword},description=#{description}
+        where id=#{id}
+    </update>
+    <delete id="deleteById" parameterType="int">
+        delete from t_permission where id=#{id}
+    </delete>
+
+    <select id="findAll" resultType="com.zlt.health.pojo.Permission">
+        select * from t_permission
+    </select>
+
+    <select id="findPermissionsByRoleId" parameterType="int" resultType="com.zlt.health.pojo.Permission">
+        select * from t_permission where id in (select permission_id from t_role_permission where role_id = #{roleId})
+    </select>
+
+    <select id="findByPage" resultType="com.zlt.health.pojo.Permission">
+        select * from t_permission
+        <where>
+            <if test="queryString != null and queryString.length > 0">
+                username like #{queryString} or keyword like #{queryString}
+            </if>
+        </where>
+    </select>
+
+    <select id="getRolePermissionCountByPermissionId" parameterType="int" resultType="int">
+        select count(1) from t_role_permission where permission_id = #{permissionId}
+    </select>
+</mapper>
