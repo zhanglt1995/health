@@ -29,11 +29,11 @@ public class SMSUtils {
 	/**
 	 * 你的AccessKey ID
 	 */
-	private static final String ACCESS_KEY= "LTAI4GDCHxiqYXmk8NBqCmf7";
+	private static final String ACCESS_KEY= "";
 	/**
 	 * 你的AccessKey Secret
 	 */
-	private static final String SECRET_KEY="BH3wWtFQzy4nmRc48dciAfP6YmZ3Ry";
+	private static final String SECRET_KEY="";
 
 	public static void main(String[] args) throws ClientException {
 		SMSUtils.sendShortMessage(VALIDATE_CODE,"18771015877","666666");
